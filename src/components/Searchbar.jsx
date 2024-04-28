@@ -1,40 +1,50 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-
 import { Searchbarr, SearchFormButton, SearchForm, SearchFormButtonLabel, SearchFormInput } from './Searchbar.styled';
 
-function Searchbar({ onSubmit }) {
-    const [searchTerm, setSearchTerm] = useState('');
+class Searchbar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchTerm: ''
+        };
+    }
 
-    const handleSubmit = (event) => {
+    handleSubmit = (event) => {
         event.preventDefault();
+        const { onSubmit } = this.props;
+        const { searchTerm } = this.state;
         onSubmit(searchTerm);
     };
 
-    const handleChange = (event) => {
-        setSearchTerm(event.target.value);
+    handleChange = (event) => {
+        this.setState({ searchTerm: event.target.value });
     };
 
-    return (
-        <Searchbarr className="searchbar">
-            <SearchForm className="form" onSubmit={handleSubmit}>
-                <SearchFormButton type="submit" className="button">
-                    <FontAwesomeIcon icon={faSearch} />
-                    <SearchFormButtonLabel className="button-label">Search</SearchFormButtonLabel>
-                </SearchFormButton>
-                <SearchFormInput
-                    className="input"
-                    type="text"
-                    autoComplete="off"
-                    autoFocus
-                    placeholder="Search images and photos"
-                    value={searchTerm}
-                    onChange={handleChange}
-                />
-            </SearchForm>
-        </Searchbarr>
-    );
+    render() {
+        const { searchTerm } = this.state;
+
+        return (
+            <Searchbarr className="searchbar">
+                <SearchForm className="form" onSubmit={this.handleSubmit}>
+                    <SearchFormButton type="submit" className="button">
+                        <FontAwesomeIcon icon={faSearch} />
+                        <SearchFormButtonLabel className="button-label">Search</SearchFormButtonLabel>
+                    </SearchFormButton>
+                    <SearchFormInput
+                        className="input"
+                        type="text"
+                        autoComplete="off"
+                        autoFocus
+                        placeholder="Search images and photos"
+                        value={searchTerm}
+                        onChange={this.handleChange}
+                    />
+                </SearchForm>
+            </Searchbarr>
+        );
+    }
 }
 
 export default Searchbar;

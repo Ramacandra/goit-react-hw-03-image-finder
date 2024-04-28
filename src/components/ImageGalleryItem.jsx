@@ -1,17 +1,21 @@
-import React from 'react';
-
+import React, { Component } from 'react';
 import { ImageGalleryItemContainer, ImageGalleryItemImage } from './ImageGalleryItem.styled';
 
-function ImageGalleryItem({ id, url, openModal }) {
-    const handleClick = () => {
+class ImageGalleryItem extends Component {
+    handleClick = () => {
+        const { url, openModal } = this.props;
         openModal(url);
     };
 
-    return (
-        <ImageGalleryItemContainer className="image-gallery-item">
-            <ImageGalleryItemImage src={url} alt="" onClick={handleClick} />
-        </ImageGalleryItemContainer>
-    );
+    render() {
+        const { url } = this.props;
+
+        return (
+            <ImageGalleryItemContainer className="image-gallery-item">
+                <ImageGalleryItemImage src={url} alt="" onClick={this.handleClick} />
+            </ImageGalleryItemContainer>
+        );
+    }
 }
 
 export default ImageGalleryItem;

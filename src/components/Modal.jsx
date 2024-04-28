@@ -1,48 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-
 import { Overlay, ModalContainer, CloseButton, Image } from './Modal.styled';
 
+class Modal extends Component {
+    componentDidMount() {
+        document.addEventListener('keydown', this.handleKeyDown);
+    }
 
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKeyDown);
+    }
 
-function Modal({ isOpen, imageUrl, altText, onClose }) {
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.keyCode === 27 && isOpen) {
-                onClose();
-            }
-        };
+    handleKeyDown = (event) => {
+        const { isOpen, onClose } = this.props;
+        if (event.keyCode === 27 && isOpen) {
+            onClose();
+        }
+    };
 
-        document.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [isOpen, onClose]);
-
-    const handleOverlayClick = () => {
+    handleOverlayClick = () => {
+        const { onClose } = this.props;
         onClose();
     };
 
-    const handleModalClick = (e) => {
+    handleModalClick = (e) => {
         e.stopPropagation();
     };
 
-    return (
-        <>
-            {isOpen && (
-                <Overlay className="overlay" onClick={handleOverlayClick}>
-                    <ModalContainer className="modal" onClick={handleModalClick}>
-                        <Image src={imageUrl} alt={altText} />
-                        <CloseButton onClick={onClose}>
-                            <FontAwesomeIcon icon={faTimesCircle} />
-                        </CloseButton>
-                    </ModalContainer>
-                </Overlay>
-            )}
-        </>
-    );
+    render() {
+        const { isOpen, imageUrl, altText, onClose } = this.props;
+
+        return (
+            <>
+                {isOpen && (
+                    <Overlay className="overlay" onClick={this.handleOverlayClick}>
+                        <ModalContainer className="modal" onClick={this.handleModalClick}>
+                            <Image src={imageUrl} alt={altText} />
+                            <CloseButton onClick={onClose}>
+                                <FontAwesomeIcon icon={faTimesCircle} />
+                            </CloseButton>
+                        </ModalContainer>
+                    </Overlay>
+                )}
+            </>
+        );
+    }
 }
 
 export default Modal;
