@@ -44,7 +44,7 @@ class App extends Component {
   };
 
   render() {
-    const { searchTerm, images, loading, modalOpen, selectedImageUrl, selectedImageAlt } = this.state;
+    const { images, loading, modalOpen, selectedImageUrl, selectedImageAlt } = this.state;
 
     return (
       <AppContainer className="App">
